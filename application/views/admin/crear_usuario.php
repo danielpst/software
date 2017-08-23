@@ -107,7 +107,7 @@ echo nl2br('- ' . $min_chars_for_password . '<br/>' .
             <div class="form-group">
                 <label class="col-md-4 control-label" for="submit"></label>
                 <div class="col-md-4">
-                    <button id="submit" name="submit" class="btn btn-primary">Registrar</button>
+                    <button id="submit" name="submit"   class="btn btn-primary">Registrar</button>
                 </div>
             </div>
 

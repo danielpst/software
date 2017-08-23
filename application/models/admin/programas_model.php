@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
-class programas_model extends CI_Model{
+class Programas_model extends CI_Model{
 
 public function __construct()
 	{
@@ -18,8 +18,9 @@ public function __construct()
 
 	 */
         public function ingresar_programa($programa){
-            		$this->db->set($programa)
-                        ->insert(db_table('programas'));
+
+           $this->db->query("Insert Into programas (nombre,categoria,logo) values('".$programa['nombre']."','".$programa['categoria']."','".$programa['logo']."');");
+           
                 
                 if( $this->db->affected_rows() == 1 ){
                     $data['correcto']= 'Programa: '.$programa['nombre']. ' Registrado con exito.';
@@ -40,7 +41,7 @@ public function __construct()
 	 */
            public function delete_programa($id){
         
-        return $this->db->query("Delete from programas WHERE id='".$id."';");
+        $this->db->query("Delete from programas WHERE id='".$id."';");
             if( $this->db->affected_rows() == 1 ){
                     $data['correcto']= 'Programa '.$id. ' Eliminado con exito.';
                     return $data;
@@ -59,7 +60,7 @@ public function __construct()
 	 */
         public function programas_varios(){
 		// Programas table query
-		$query = $this->db->query("SELECT id,nombre,logo FROM programas where categoria='varios';");
+		$query = $this->db->query("SELECT id,nombre,logo FROM programas where categoria='Varios';");
         if ($query->num_rows() > 0) {
             return $query->result();
            
@@ -74,7 +75,7 @@ public function __construct()
 	 */
         public function all_programas(){
 		// Programas table query
-		$query = $this->db->query("SELECT id,nombre,logo FROM programas;");
+		$query = $this->db->query("SELECT logo,id,nombre,categoria FROM programas;");
         if ($query->num_rows() > 0) {
             return $query->result();
            
@@ -85,8 +86,8 @@ public function __construct()
      * Seleccionar todos los programas por categoria
      */
     public function programasxcategoria($categoria){
-		// User table query
-       $query = $this->db->query("SELECT id, nombre  FROM programas where id='".$categoria."';");
+		
+       $query = $this->db->query("SELECT id, nombre  FROM programas where categoria='".$categoria."';");
         if ($query->num_rows() > 0) {
             $data =array();
             foreach ($query->result() as $programa) {
@@ -97,7 +98,7 @@ public function __construct()
         } else
             return false;
     }
-    
+
            /**
 	 * Seleccionar programa por id
 	 * 
