@@ -17,12 +17,10 @@ public function __construct()
 
 	 */
         public function ingresar_equipo($equipo){
-            		$this->db->set($equipo)
-                        ->insert(db_table('equipo'));
+            		$this->db->insert('equipo',$equipo);
                 
                 if( $this->db->affected_rows() == 1 ){
-                    $data['correcto']= 'Equipo con placa '.$equipo['id_placa']. ' Registrado con exito.';
-                    return $data;
+                        return true;
         }       else{
                     $data['error']= $this->db->_error_message();
                     return $data;
@@ -30,4 +28,16 @@ public function __construct()
             
         }
         }
+        /*
+         * Buscar un equipo
+         * @param String placa del equipo a buscar
+         */
+            public function buscar($placa){
+       $query = $this->db->get_where('equipo', array('placa' => $placa));
+       
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else
+            return false;
+    }
 }

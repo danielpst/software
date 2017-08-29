@@ -34,12 +34,10 @@ public function __construct()
 
 	 */
         public function ingresar_soporte($soporte){
-            		$this->db->set($soporte)
-                        ->insert(db_table('soporte'));
+            		$this->db->insert('soporte',$soporte);
                 
                 if( $this->db->affected_rows() == 1 ){
-                    $data['correcto']= 'Soporte: Para el equipo '.$soporte['id_placa']. ' Registrado con exito.';
-                    return $data;
+                        return true;
         }       else{
                     $data['error']= $this->db->_error_message();
                     return $data;

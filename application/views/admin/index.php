@@ -100,6 +100,7 @@
                         $("#fecha_asignacion").prop('disabled', true);
                         $("#nombre_responsable").prop('disabled', true); 
                         $("#dependencia").prop('disabled', true);
+                         $("#observacion").prop('disabled', true);
                         $("#fecha_asignacion").prop('required', false);
                         $("nombre_responsable").prop('required', false);
                         $("#dependencia").prop('required', false);
@@ -109,7 +110,7 @@
                         $("#fecha_asignacion").removeAttr("disabled");
                         $("#nombre_responsable").removeAttr("disabled");
                         $("#dependencia").removeAttr("disabled");
-;
+                        $("#observacion").removeAttr("disabled");
                         $("#fecha_asignacion").prop('required', true);
                         $("#nombre_responsable").prop('required', true);
                         $("#dependencia").prop('required', true);
@@ -126,10 +127,12 @@
                         $("#fecha_soporte").prop('disabled', true);
                         $("#folio_soporte").prop('disabled', true);
                         $("#hoja_soporte").prop('disabled', true);
+                        $("#solucion").prop('disabled', true);
                         
                         $("#actividad_realizada").prop('required', false);
                         $("#falla").prop('required', false);
                         $("#fecha_soporte").prop('required', false);
+                        $("#solucion").prop('required', false);
 
                         
                     }else{
@@ -138,9 +141,11 @@
                         $("#fecha_soporte").removeAttr("disabled");
                         $("#folio_soporte").removeAttr("disabled");
                         $("#hoja_soporte").removeAttr("disabled");
+                        $("#solucion").removeAttr("disabled");
                         $("#actividad_realizada").prop('required', true);
                         $("#falla").prop('required', true);
                         $("#fecha_soporte").prop('required', true);
+                        $("#solucion").prop('required', true);
 
                     }
                 });
@@ -165,18 +170,22 @@
                         $("#fecha_soporte").prop('disabled', true);
                         $("#folio_soporte").prop('disabled', true);
                         $("#hoja_soporte").prop('disabled', true);
+                        $("#solucion").prop('disabled', true);
                         
                         $("#actividad_realizada").prop('required', false);
                         $("#falla").prop('required', false);
                         $("#fecha_soporte").prop('required', false);
+                        $("#solucion").prop('required', false);
                 //DESACTIVAR SECCION DE RESPONSABLE 
                         $('input[name=check_responsable]').attr('checked', true);
                         $("#fecha_asignacion").prop('disabled', true);
                         $("#nombre_responsable").prop('disabled', true); 
                         $("#dependencia").prop('disabled', true);
+                        $("#observacion").prop('disabled', true);
                         $("#fecha_asignacion").prop('required', false);
                         $("nombre_responsable").prop('required', false);
                         $("#dependencia").prop('required', false);
+                        $("#observacion").prop('required', false);
   
     });
 </script>
@@ -273,6 +282,7 @@
                                                         <label for="imagen_equipo">Imagen Equipo:</label>
                                                         <div class="input-group">
                                                         <input id="imagen_equipo" type="file" class="form-control" name="imagen_equipo">
+                                                        <h6>Tamaño maximo permitido 300 x 300 pixeles</h6>
                                                         </div>
 
                                                     </div>
@@ -472,12 +482,23 @@
                                                         </div>
                                                                                                                                                 <div class="form-group">
                                                                     <label class="control-label control-label-left col-sm-4" for="recovery">Recovry en PC</label>
-                                                                    <div class="controls col-sm-3">
+                                                                    <div class="controls col-sm-2">
 
                                                                         <select id="has_recovery" name="has_recovery" class="form-control" data-role="select" data-parsley-errors-container="#errId13">
-                                                                            <option value=""></option>
+                                                                          <option value="1"> Si</option>
                                                                             <option value="0">No</option>
+                                                                            
+                                                                        </select><span id="errId13" class="error"></span></div>
+
+                                                        </div>
+                                                                    <div class="form-group">
+                                                                    <label class="control-label control-label-left col-sm-4" for="original">Original</label>
+                                                                    <div class="controls col-sm-2">
+
+                                                                        <select id="original" name="original" required class="form-control" data-role="select" data-parsley-errors-container="#errId13">
                                                                             <option value="1"> Si</option>
+                                                                            <option value="0">No</option>
+                                                                            
                                                                         </select><span id="errId13" class="error"></span></div>
 
                                                         </div>
@@ -614,6 +635,16 @@
                                                                 </div>
 
                                                         </div>
+                                                                                                <div class="form-group">
+                                                                    <label class="control-label control-label-left col-sm-4" for="original">Original</label>
+                                                                    <div class="controls col-sm-2">
+
+                                                                        <select id="originalof" name="originalof" class="form-control" required data-role="select" data-parsley-errors-container="#errId13">
+                                                                            <option value="0">No</option>
+                                                                            <option value="1"> Si</option>
+                                                                        </select><span id="errId13" class="error"></span></div>
+
+                                                        </div>
 
                         </div>
 
@@ -660,8 +691,7 @@
                              <div class='row'>                                                 
 
       
-                    <h4>$pro->nombre</h4>
-                        		   
+                    <h4>$pro->nombre</h4>	   
   			<div class='col-sm-2'>
                     <img src='uploads/logos/$pro->logo' alt='$pro->nombre' height='100' width='100'>
         	</div>
@@ -686,8 +716,7 @@
                    
                    
                    
-                  
-              
+                                
             }
             
    
@@ -713,7 +742,21 @@
 
                                   <input id="fecha_soporte" name="fecha_soporte" type="date" class='form-control k-textbox' data-role='text' data-parsley-errors-container='#errId5'><span id='errId5' class='error'></span>
 
-                              </div></div><div class="col-md-6"></div></div><div class="row"><div class="col-md-12"><div class="form-group">
+                              </div>
+                              </div>
+                              <div class="col-md-9">
+                                                                      <div class="form-group">
+                                                                    <label class="control-label control-label-left col-sm-4" for="solucion">Se soluciono</label>
+                                                                    <div class="controls col-sm-6">
+
+                                                                        <select id="solucion" name="solucion" class="form-control" data-role="select" data-parsley-errors-container="#errId13">
+                                                                            <option value="1"> Si</option>
+                                                                            <option value="0">No</option>
+                                                                            
+                                                                        </select><span id="errId13" class="error"></span></div>
+
+                                                        </div>
+                              </div></div><div class="row"><div class="col-md-12"><div class="form-group">
                                   <label class="control-label control-label-left col-sm-3" for="field10">Falla</label>
                                   <div class="controls col-sm-9">
 
@@ -819,7 +862,18 @@
                                     ?>
                               </div>
 
-                          </div></div></div></div>
+                          </di></div></div></div>
+                  <div class="row"><div class="col-md-12"><div class="form-group">
+                                  <label class="control-label control-label-left col-sm-3" for="observacion">Observacion</label>
+                                  <div class="controls col-sm-9">
+
+                                      <textarea id="observacion" name="observacion" rows="3" class="form-control k-textbox" data-role="textarea" style="margin-top: 0px; margin-bottom: 0px; height: 100px;" data-maxwords="250" data-parsley-errors-container="#errId3"></textarea><span id="errId3" class="error"></span></div>
+
+                              </div>
+
+                                  </div>
+                              </div>
+                  
           </div>
                                 
 

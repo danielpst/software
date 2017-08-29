@@ -113,6 +113,22 @@ public function __construct()
         } else
             return false;
     }
+    /*Relaciona un programa con un equipo 
+    *@param array con el nombre y la placa del equipo a instalar
+     * 
+     */
+    public function instalar_programa($proxequipo){
+                $this->db->insert('prog_x_equi',$proxequipo);
+                
+                if( $this->db->affected_rows() == 1 ){
+                    return true;
+        }       else{
+                    $data['error']= $this->db->_error_message();
+                    return $data;
+                
+            
+        }
+    }
     
     
         

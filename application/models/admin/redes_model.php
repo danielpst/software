@@ -17,9 +17,7 @@ public function __construct()
 
 	 */
         public function ingresar_red($red){
-            		$this->db->set($red)
-                        ->insert(db_table('redes'));
-                
+                    $this->db->insert('redes',$red);
                 if( $this->db->affected_rows() == 1 ){
                     $data['correcto']= 'Red '.$red['nombre']. ' Registrada con exito.';
                     return $data;

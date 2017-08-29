@@ -17,8 +17,7 @@ public function __construct()
 
 	 */
         public function ingresar_marca($marca){
-            		$this->db->set($marca)
-                        ->insert(db_table('marca_equipo'));
+            		$this->db->insert('marca_equipo',$marca);
                 
                 if( $this->db->affected_rows() == 1 ){
                     $data['correcto']= 'Marca '.$marca['nombre']. ' Registrada con exito.';
