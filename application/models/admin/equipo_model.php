@@ -36,7 +36,7 @@ public function __construct()
        $query = $this->db->get_where('equipo', array('placa' => $placa));
        
         if ($query->num_rows() > 0) {
-            return $query->result();
+            return $query->row_array();
         } else
             return false;
     }

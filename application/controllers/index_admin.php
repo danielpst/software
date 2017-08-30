@@ -139,6 +139,9 @@ class Index_admin extends MY_Controller{
         public function buscar_equipo(){
             $placa= 9876;
             $equipo=$this->equipo_model->buscar($placa);
+            //obtenemos los datos de la marca
+            
+            
             $data['equipo']=$equipo;
             $this->load->view('admin/head.php');
           $this->load->view('admin/dashboard_head.php');
