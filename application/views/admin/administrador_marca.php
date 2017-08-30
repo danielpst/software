@@ -101,7 +101,7 @@
     
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
-
+</div>
 </div><!-- /.modal -->
 
 <!-- Modal para agregar una marca-->
