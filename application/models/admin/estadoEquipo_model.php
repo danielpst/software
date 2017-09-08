@@ -39,7 +39,7 @@ public function __construct()
 	 */
            public function delete_estado($estado){
         
-        return $this->db->query("Delete from estado_equipo WHERE estado='".$estado."';");
+       $this->db->query("Delete from estado_equipo WHERE estado='".$estado."';");
             if( $this->db->affected_rows() == 1 ){
                     $data['correcto']= 'Estado '.$estado. ' Eliminado con exito.';
                     return $data;

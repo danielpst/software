@@ -34,11 +34,11 @@ public function __construct()
 	 * @param  array  placa del equipo a buscar configuracion
 
 	 */
-       public function obtener_configuracion($placa){
+       public function buscar($placa){
        
        $query = $this->db->query("SELECT nombre_equipo,dominio,en_red,id_nombre_red,dhcp,ip_fija,mac_fija,mac_inalambrica FROM configuracion_red where id_placa='".$placa."';");
         if ($query->num_rows() > 0) {
-            return $query->result();
+            return $query->row_array();
         } else
             return false;
     }

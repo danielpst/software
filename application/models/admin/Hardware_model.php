@@ -34,11 +34,11 @@ public function __construct()
 	 * @param  array  placa del equipo a buscar el hardware
 
 	 */
-       public function obtener_hardware($placa){
+       public function buscar($placa){
        
        $query = $this->db->query("SELECT procesador,marca_disco,capacidad_disco,capacidad_ram FROM hardware where id_placa='".$placa."';");
         if ($query->num_rows() > 0) {
-            return $query->result();
+            return $query->row_array();
         } else
             return false;
     }

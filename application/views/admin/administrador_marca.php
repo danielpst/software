@@ -22,11 +22,13 @@
     function confirmar_delete(i){
      var id= i;
      $('input#nombre_delete_id').val(id);
+     $('input#marca_delete_id').val(id);
      $('#Modal_confirmar').modal('show');
     }  
     function editar(i){
         var nombre= i;
         $('input#nombre_old').val(nombre);
+        $('input#nombred').val(nombre);
 
                   $('#ActualizaMarca').modal('show');
 
@@ -66,11 +68,12 @@
       </div>
       <div class="modal-body">
         
-                   <form action="<?php echo base_url() . 'administrador_programas/actualizar_marca' ?>"   class="form-horizontal"  method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                   <form action="<?php echo base_url() . 'administrador_marca/actualizar_marca' ?>"   class="form-horizontal"  method="post" accept-charset="utf-8" enctype="multipart/form-data">
                              <div class="form-group">
                 <label class="control-label control-label-left col-sm-2" for="nombre">Nombre Actual<span class="req"> *</span></label>
                      <div class="controls col-sm-9">
-                         <input id="nombre_old" name="nombre_old" type="text" class="form-control k-textbox" data-role="text" disabled="disable"required="required" data-parsley-errors-container="#errId6"><span id="errId6" class="error"></span>
+                         <input id="nombred" name="nombred" type="text" class="form-control k-textbox" data-role="text" disabled="disable"required="required" data-parsley-errors-container="#errId6"><span id="errId6" class="error"></span>
+                    <input id="nombre_old" name="nombre_old" type="hidden"> 
                      </div>
               </div>
                        <div class="form-group">
@@ -156,13 +159,13 @@
         <h4 class="modal-title">Eliminar Marca</h4>
       </div>
         <div class="modal-body">
-            ¿Esta seguro que desea Eliminar la marca:
-             <form action="<?php echo base_url() . 'administrador_marcas/eliminar_marca' ?>" class="form-horizontal" method="post" accept-charset="utf-8">
+            ¿Esta seguro que desea Eliminar la marca?
+             <form action="<?php echo base_url() . 'administrador_marca/eliminar_marca' ?>" class="form-horizontal" method="post" accept-charset="utf-8">
                 <div class="form-group">
                 <label class="col-sm-2 control-label" for="marca_nombre">Nombre: </label>  
-                <div class="col-sm-3">
-                    <input id="programa_delete_id" name="marca_delete_id" type="text" readonly="true" class="form-control input-md" value="">
-                 
+                <div class="col-sm-8">
+                    <input id="nombre_delete_id" name="nombre_delete_id" type="text" readonly="true" class="form-control input-md" value="">
+                    <input id="marca_delete_id" name="marca_delete_id" type="hidden">
                 </div>
             </div>
         </div>

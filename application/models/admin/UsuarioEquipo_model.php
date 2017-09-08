@@ -27,4 +27,17 @@ public function __construct()
             
         }
         }
+        /*
+         * Buscamos usuarios del sistema operativo
+         * @param int placa del equipo
+         */
+        public function buscar($placa) {
+                    $query = $this->db->query("SELECT * FROM usuario_equipo where id_placa='".$placa."';");
+        if ($query->num_rows() > 0) {
+            return $query->result();
+           
+        } else{
+            return false;
+        }
+        }
 }

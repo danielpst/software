@@ -32,7 +32,7 @@ public function __construct()
          * Buscar una marca especifica
          * @param String nombre de la marca a buscar
          */
-            public function buscar_unica($marca){
+            public function buscar($marca){
        $query = $this->db->get_where('marca_equipo', array('nombre' => $marca));
        
         if ($query->num_rows() > 0) {
@@ -62,5 +62,40 @@ public function __construct()
     public function actualizar($marca,$nombre) {
         $this->db->where('nombre', $nombre);
         return $this->db->update('marca_equipo', $marca); 
+    }
+    /*
+     * Borrar una marca del sistema
+     * param array nombre de la marca a eliminar
+     */
+    public function borrar($marca){
+        $this->db->where('nombre', $marca);
+        $this->db->delete('marca_equipo'); 
+            if( $this->db->affected_rows() == 1 ){
+                    return true;
+        }       else{
+
+                    return false;
+                
+            
+        }
+    }
+           /**
+	 * Seleccionar todas las marcas
+	 * 
+	 * 
+
+	 */
+    public function all_marcas(){
+	
+        $query = $this->db->query("SELECT nombre FROM marca_equipo;");
+        if ($query->num_rows() > 0) {
+            $data =array();
+            foreach ($query->result() as $marca) {
+                $data[$marca->nombre] =  $marca -> nombre;
+            }
+            return $data;
+           
+        } else
+            return false;
     }
 }

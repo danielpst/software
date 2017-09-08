@@ -1,4 +1,10 @@
-<form action="<?php echo base_url() . 'index_admin/ingresos' ?>"   class="form-horizontal"  method="post" accept-charset="utf-8" enctype="multipart/form-data">
-    <input type="text" value="" name="proInstalados" >
-    <button id="registrar_equipo" type="submit" class="btn btn-primary" name="registrar_equipo">Registrar Equipo</button>
-</form>
+<div class="col-sm-9"><!--INICIO DEL DIV PRINCIPAL DEL LADO DERECHO-->
+    
+<div class='container'>
+    <?php
+    if(isset($html)){
+        echo $html;
+    }
+    ?>
+    </div>
+</div>

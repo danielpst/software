@@ -49,25 +49,7 @@ public function __construct()
             
         }
     }
-       /**
-	 * Seleccionar todas las marcas
-	 * 
-	 * 
 
-	 */
-    public function all_marcas(){
-	
-        $query = $this->db->query("SELECT nombre FROM marca_equipo;");
-        if ($query->num_rows() > 0) {
-            $data =array();
-            foreach ($query->result() as $marca) {
-                $data[$marca->nombre] =  $marca -> nombre;
-            }
-            return $data;
-           
-        } else
-            return false;
-    }
            /**
 	 * Seleccionar una marca
 	 * 

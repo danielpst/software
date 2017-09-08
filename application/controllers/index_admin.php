@@ -26,7 +26,7 @@ class Index_admin extends MY_Controller{
                 $this->load->model('admin/equipo_model');
                 $this->load->model('admin/Hardware_model');
                 $this->load->model('admin/ConfiguracionRed_model');
-                $this->load->model('admin/marcaEquipo_model');
+                $this->load->model('admin/Marca_model');
                 $this->load->model('admin/estadoEquipo_model');
                 $this->load->model('admin/tipoEquipo_model');
                 $this->load->model('admin/redes_model');
@@ -35,6 +35,7 @@ class Index_admin extends MY_Controller{
                 $this->load->model('admin/programas_model');
                 $this->load->model('admin/dependencia_model');
                 $this->load->model('admin/soporte_model');
+                
                 $this->load->library('upload');
 	}
         function index(){
@@ -43,7 +44,7 @@ class Index_admin extends MY_Controller{
             $data['redes']=  $this->redes_model->all_redes_dropdown();
             $data['tipos']= $this->tipoEquipo_model->all_tipo_dropdown();
             $data['estados']=$this->estadoEquipo_model->all_estado_dropdown();
-            $data['marcas']=  $this->marcaEquipo_model->all_marcas();
+            $data['marcas']=  $this->Marca_model->all_marcas();
             $data['windows']=  $this->programas_model->programasxcategoria('Sistema Operativo');
             $data['office']=  $this->programas_model->programasxcategoria('Office');
             $data['all_pro']=  $this->programas_model->programas_varios();
@@ -58,35 +59,7 @@ class Index_admin extends MY_Controller{
    //         $this->load->view('admin/dashboard.php');
             $this->load->view('admin/footer.php');
         }
-        function ingresar_equipo(){
-            
-            
-        
-            
-        
-                    
-        
-                if (!empty($_FILES['imagen_soporte']))
-        {
-            // Configuración para el Archivo 1
-            $config['upload_path'] = 'uploads/Soporte/';
-            $config['file_name']='0007562';
-            $config['allowed_types'] = 'pdf';
-            $config['max_size'] = '0';
-            // Cargamos la configuración del Archivo 1
-            $this->upload->initialize($config);
-            // Subimos archivo 1
-            if ($this->upload->do_upload('imagen_equipo'))
-            {
-                $data = $this->upload->data();
-            }
-            else
-            {
-                echo $this->upload->display_errors();
-            }
 
-        }
-        }
         
         /*
          * Funcion que se encarga de mostrar todos los programas 
@@ -137,15 +110,139 @@ class Index_admin extends MY_Controller{
            $this->load->view('testfile.php');
        }
         public function buscar_equipo(){
+
+            $html = "<div class='row'><div class='col-md-7'><h4> Placa del Equipo:</h4>
+                        <div class='col-md-offset-1 col-md-7'>
+                        <h1 style='color: #5e9ca0; font-size: 120px;'>";
             $placa= 9876;
             $equipo=$this->equipo_model->buscar($placa);
-            //obtenemos los datos de la marca
+            $html .= $this->completar_placa($equipo['placa']);
+            $html .= "</h1></div></div><div class='col-md-5'><img src='".base_url()."uploads/Imagen_equipo/".$equipo['imagen']."' width='300' heigth='300' />      </div>
+                        </div><hr><div class='row'><div class='row'><div class='col-md-11'><h4>Informaciòn General</h4></div>
+                        <div class='col-md-1'><div class='form-group pull-right'><button id='editar_hardware' type='button' class='btn btn-default'>
+                        <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></button></div></div></div><div class='col-md-offset-1 col-md-8'>
+                        <dl class='dl-horizontal'>    <dt>Estado:</dt>
+                        <dd>";
+            if($equipo['id_estado_equipo']== "Alta"){
+        $html .= "<p class='text-success'><strong>".$equipo['id_estado_equipo']."</strong></p></dd>";}else{
+            $html .= "<p class='text-error'><strong>".$equipo['id_estado_equipo']."</strong></p></dd>";
+        }
+        $html .= "<dt>Marca:</dt><dd>".$equipo['id_marca_equipo']."</dd><dt>Tipo Equipo:</dt><dd>";
+        $html .= $equipo['id_tipo_equipo']."</dd><dt>Referencia:</dt><dd>";
+        $html .= $equipo['referencia']."</dd><dt>Serial:</dt><dd>";
+        $html .= $equipo['serial']."</dd><dt>Producto Nro:</dt><dd>";
+        $html .= $equipo['producto_nro']."</dd><dt>Fecha de compra:</dt><dd>";
+        $html .= $equipo['fecha_compra']."</dd><dt>Hoja de Vida Fisica:</dt><dd>";
+        $html .= anchor('uploads/Hoja_vida/'.$equipo['hoja_fisica'], 'Hoja de vida Fisica')."</dd><dt>Hoja de Vida Folio:</dt><dd>";
+        $html .= $equipo['folio_nro']."</dd><dt>Instaladores Fisicos:</dt><dd>"; 
+        $html .= $equipo['inst_fisicos']."</dd></dl></div><div class='col-md-3'>";
+                    //obtenemos los datos de la marca
+        $marca=  $this->Marca_model->buscar($equipo['id_marca_equipo']);
+        $html .= " <img src='".base_url()."uploads/logos/".$marca['logo']."' width='100' heigth='100' /></div></div><hr>";
+        //comprobamos si es un equipo de computo 
+        if($equipo['id_tipo_equipo']=="Cómputo"){
+            //es equipo de computo
+                            //Buscamos la configuracion de hardware
+                $hardware= $this->Hardware_model->buscar($equipo['placa']);
+                $html .= "<div class='row'><div class='row'><div class='col-md-11'><h4>Información hardware</h4></div>
+                         <div class='col-md-1'><div class='form-group pull-right'><button id='editar_hardware' type='button' class='btn btn-default'>
+                         <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></button></div></div></div><div class='col-md-offset-1 col-md-8'>
+                         <dl class='dl-horizontal'><dt>Procesador:</dt><dd><p class=''><strong>";
+                $html .=$hardware['procesador']."</strong></p></dd><dt>Marca Disco Duro:</dt><dd>";
+                $html .= $hardware['marca_disco']."</dd><dt>Capacidad Disco Duro:</dt>  <dd>";
+                $html .= $hardware['capacidad_disco']."</dd><dt>Capacidad de la RAM:</dt><dd>";
+                $html .= $hardware['capacidad_ram']."</dd></dl></div></div><hr>";         
+        }
+        $red =$this->ConfiguracionRed_model->buscar($equipo['placa']);
+        if($red){
+            $html .= "<div class='row'><div class='row'><div class='col-md-11'><h4>Información de red</h4></div>
+                        <div class='col-md-1'><div class='form-group pull-right'><button id='editar_hardware' type='button' class='btn btn-default'>
+                    <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></button></div> </div></div> <div class='col-md-offset-1 col-md-8'>
+                    <dl class='dl-horizontal'><dt>Nombre del Equipo:</dt><dd><p class=''><strong>";
+            $html .= $red['nombre_equipo']."</strong></p></dd><dt>En Red:</dt><dd>";
+            if($red['en_red']==1){
+                $html .= "Si"."</dd><dt>Red:</dt><dd>";
+            }else{
+                $html .= "No"."</dd><dt>Red:</dt><dd>";
+            }
+            $html .= $red['id_nombre_red']."</dd><dt>DHCP:</dt><dd>";
+            if($red['dhcp']==1){
+                $html .= "Si</dd><dt>Ip fija:</dt><dd>";
+            }else{
+                $html .= "No</dd><dt>Ip fija:</dt><dd>";
+            }
             
-            
-            $data['equipo']=$equipo;
-            $this->load->view('admin/head.php');
+            $html .= $red['ip_fija']."</dd><dt>MAC fija:</dt><dd>";
+            $html .= $red['mac_fija']."</dd><dt>MAC Wifi:</dt><dd>";
+            $html .= $red['mac_inalambrica']." </dl></div></div><hr>";
+        }
+       if($equipo['id_tipo_equipo']=="Cómputo"){
+                           //buscamos el sistema operativo
+                $SO=$this->programas_model->proInstalados($equipo['placa'],"Sistema Operativo",1);
+                $html .= "<div class='row'> <div class='row'><div class='col-md-11'><h4>Información del Sistema Operativo</h4> </div>
+                        <div class='col-md-1'> <div class='form-group pull-right'><button id='editar_hardware' type='button' class='btn btn-default'>
+                        <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></button> </div></div></div> <div class='col-md-offset-1 col-md-8'>
+                        <dl class='dl-horizontal'><dt>Sistema Operativo:</dt><dd><p class=''><strong>";
+                foreach ($SO as $sis) {
+                    $nom = $this->programas_model->buscar($sis->id_programa);
+                    $html .= $nom['nombre']."</strong></p></dd><dt>Serial:</dt><dd>";
+                    $html .= $sis->serial ."</dd><dt>Fecha de Instalación:</dt><dd>";
+                    $html .= $sis->fecha_instalacion ."</dd><dt>Tiene Recovery en D.D:</dt><dd>";
+                
+                    //buscamos si hay recovery en disco duro
+                    $RDD=$this->programas_model->especiales($equipo['placa'],1,1);
+                    if($RDD){
+                        $html .= "Si</dd>";
+                    }else{
+                        $html .= "No</dd>";
+                    }
+                    //buscamos usuarios del sistema operativo
+                    $usu = $this->UsuarioEquipo_model->buscar($equipo['placa']);
+                    if($usu){
+                        $html .= "<div class='col-md-offset-1'>";
+                        foreach ($usu as $usuario) {
+                            $html .= "<dt>Usuario:</dt> <dd>";
+                            $html .= $usuario->nombre ."</dd><dt>Clave:</dt><dd>";
+                            $html .= $usuario->contrasena ."</dd><dt>Tipo Cuenta:</dt><dd>";
+                            $html .= $usuario->id_tipo_usuario ."</dd>";
+                        }
+                        $html .= "</div>";
+                    }
+                    $html .= "</dl>";
+                //buscamos si se a formateado
+                $FO=$this->programas_model->especiales($equipo['placa'],2,1);  
+                 if($FO){
+                    
+                     foreach ($FO as $formateo) {
+                          $html .= "<div class='panel panel-info'><div class='panel-heading'><h5 class='panel-title'>Este equipo presenta formateo el dia: ";
+                          $html .= $formateo->fecha_instalacion ."</h5></div></div>";
+                     }
+                 }
+                 $html .= "</div><div class='col-md-3'><img src='".base_url()."uploads/logos/".$nom['logo']."' width='100' heigth='100' /> </div></div><hr>";
+       }
+                        //buscamos el sistema operativo
+                $OF=$this->programas_model->proInstalados($equipo['placa'],"Office",1);
+                $html .= "<div class='row'><div class='row'><div class='col-md-11'><h4>Información del Office</h4> </div><div class='col-md-1'>
+      <div class='form-group pull-right'><button id='editar_hardware' type='button' class='btn btn-default'><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>
+      </button></div></div></div><div class='col-md-offset-1 col-md-8'><dl class='dl-horizontal'><dt>Office:</dt> <dd><p class=''><strong>";
+                foreach ($OF as $office) {
+                    $ofi = $this->programas_model->buscar($office->id_programa);
+                    $html .= $ofi['nombre'] ."</strong></p></dd><dt>Serial:</dt><dd>";
+                    $html .= $office->serial ."</dd><dt>Fecha de Instalación:</dt><dd>";
+                    $html .= $office->fecha_instalacion ."</dd></dl></div>";
+                    
+                    $html .= " <div class='col-md-3'><img src='".base_url()."uploads/logos/".$ofi['logo']."' width='100' heigth='100' /></div></div> ";
+                    
+                    }
+       }else{
+                //no es un computador
+                
+       }
+          $this->load->view('admin/head.php');
           $this->load->view('admin/dashboard_head.php');
-            $this->load->view('admin/resultado.php',$data);
+            $data['html']=$html;
+
+            $this->load->view('testfile.php',$data);
             $this->load->view('admin/footer.php');
         }
 

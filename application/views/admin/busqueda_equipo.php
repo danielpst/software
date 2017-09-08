@@ -1,4 +1,4 @@
-<div class="col-sm-9"><!--INICIO DEL DIV PRINCIPAL DEL LADO DERECHO-->
+<div class="col-sm-7"><!--INICIO DEL DIV PRINCIPAL DEL LADO DERECHO-->
     
 <div class='container'>
 <div class='row'>
@@ -26,7 +26,7 @@
       </div>
   </div>
   </div>
- 
+
   <div class='col-md-offset-1 col-md-8'>
     <dl class='dl-horizontal'>
     <dt>Estado:</dt>

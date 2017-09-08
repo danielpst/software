@@ -41,15 +41,14 @@ class Administrador_marca extends MY_Controller{
          $flag=false;
             $marca['logo']="no_disponible.png";
             $data[]= array();
-        if (!empty($_FILES['mi_logo']))
-        {
+        if ( $_FILES['mi_logo']['error'] == UPLOAD_ERR_OK){
             // Configuración para el logo
             $config['upload_path'] = './uploads/logos/';
             $config['overwrite']=false;
             $config['allowed_types'] = 'gif|jpg|png|jpeg';  
             $config['max_size'] = '100';
-             $config['max_width']  = '150';
-            $config['max_height']  = '150';   
+             $config['max_width']  = '160';
+            $config['max_height']  = '160';   
             // Cargamos la configuración del logo
             $this->upload->initialize($config);
             // Subimos el logo
@@ -67,14 +66,16 @@ class Administrador_marca extends MY_Controller{
             }
 
         }
-        $result= "";
+        $result= false;
         if($flag){
              $this->load->view('admin/head.php');
             $this->load->view('admin/dashboard_head.php');
             $this->load->view('admin/administrador_marca.php',$data);
             $this->load->view('admin/footer.php');
-        }  elseif($marca['logo']=="no_disponible.png" & $marca['nombre_new'] != "") {
+            return;
+        }elseif(strcmp($marca['logo'],"no_disponible.png")==0 & !empty($marca['nombre_new'])) {
             //ACctualizar el campo nombre
+            echo "estoy aqui";
             $act = array(
                'nombre' => $marca['nombre_new'],
             );
@@ -106,12 +107,13 @@ class Administrador_marca extends MY_Controller{
  
             $data=  array();
             foreach($result as $marca){
+                $pru="'".$marca->nombre."'";
                 $row=array(
                     "logo"=>"<img src='uploads/logos/$marca->logo' alt='$marca->nombre' height='50' width='50'>",
                     "nombre"=>$marca->nombre,
                     "acciones"=>"<div class='btn-group'>
-                    <button type='button' onclick='editar($marca->nombre)' class='btn btn-mini btn-default'><i class='glyphicon glyphicon-pencil'></i></button>
-                    <button type='button' onclick='confirmar_delete($marca->nombre)' class='btn btn-mini btn-default'><i class='glyphicon glyphicon-trash'></i></button>",
+                    <button type='button' onclick=".'editar('.$pru.") class='btn btn-mini btn-default'><i class='glyphicon glyphicon-pencil'></i></button>
+                    <button type='button' onclick=".'confirmar_delete('.$pru.") class='btn btn-mini btn-default'><i class='glyphicon glyphicon-trash'></i></button>",
                         
                         
                         );
@@ -127,7 +129,7 @@ class Administrador_marca extends MY_Controller{
         function eliminar_marca(){
             $marca_nombre= $this->input->post('marca_delete_id');
             
-             if($this->Marca_model->delete($marca_nombre)){
+             if($this->Marca_model->borrar($marca_nombre)){
                 $data['correcto']= "Se Elimino correctamente la marca. ";
             }else{
                 $data['error']= "No se pudo Eliminar la marca.";
@@ -135,7 +137,7 @@ class Administrador_marca extends MY_Controller{
 
             $this->load->view('admin/head.php');
             $this->load->view('admin/dashboard_head.php');
-            $this->load->view('admin/administrador_marca.php');
+            $this->load->view('admin/administrador_marca.php',$data);
             $this->load->view('admin/footer.php');
         }
         

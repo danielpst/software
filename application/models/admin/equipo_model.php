@@ -40,4 +40,16 @@ public function __construct()
         } else
             return false;
     }
+    /*
+     * Selecciona todos los equipos de la tabla equipo
+     * 
+     */
+     public function todos(){
+		$query = $this->db->query("SELECT placa,id_tipo_equipo,id_estado_equipo,id_marca_equipo,serial FROM equipo;");
+        if ($query->num_rows() > 0) {
+            return $query->result();
+           
+        } else
+            return false;
+    }
 }
